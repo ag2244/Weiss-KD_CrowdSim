@@ -1,0 +1,1 @@
+clang++ -std=c++11 -framework glut -framework opengl -lGLEW -Iglm -Imain.h main_tomer.cpp  && ./a.out
