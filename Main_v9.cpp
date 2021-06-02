@@ -838,159 +838,138 @@ class KD_Tree
 private:
 
 	//Node for a particle
-	class Node_Particle
+	class KD_Node
 	{
 	public:
 
-		size_t begin; //beginning node number
-		size_t end; //ending node number
+		KD_Node* left;
+		KD_Node* right;
 
-		size_t left; //left node number
-		size_t right; //right node number
+		Particle* particle;
 
-		int k;
-		std::vector<float> k_vals;
-		
-		std::vector<float> k_max;
-		std::vector<float> k_min;
+		KD_Node(Particle* newparticle) : particle(newparticle) {}
+
+		void del_node(KD_Node* node)
+		{
+			if (node != NULL) {
+				delete node->left;
+				delete node->right;
+				delete node;
+			}
+		}
+
+		void insert(Particle* newparticle, int k)
+		{
+			
+			if (k > 2) { k = 0; }
+
+			switch (k)
+			{
+			case 0:
+				if (newparticle->x < particle->x)
+				{
+					if (left)
+					{
+						left->insert(particle, k + 1);
+					}
+
+					else { left = new KD_Node(particle); }
+				}
+
+				else
+				{
+					if (right)
+					{
+						right->insert(particle, k + 1);
+					}
+
+					else { right = new KD_Node(particle); }
+				}
+
+				break;
+
+			case 1:
+
+				if (newparticle->y < particle->y)
+				{
+					if (left)
+					{
+						left->insert(particle, k + 1);
+					}
+
+					else { left = new KD_Node(particle); }
+				}
+
+				else
+				{
+					if (right)
+					{
+						right->insert(particle, k + 1);
+					}
+
+					else { right = new KD_Node(particle); }
+				}
+				
+				break;
+
+			case 2:
+
+				if (newparticle->z < particle->z)
+				{
+					if (left)
+					{
+						left->insert(particle, k + 1);
+					}
+
+					else { left = new KD_Node(particle); }
+				}
+
+				else
+				{
+					if (right)
+					{
+						right->insert(particle, k + 1);
+					}
+
+					else { right = new KD_Node(particle); }
+				}
+				
+				break;
+
+			}
+		}
 	};
 
-	explicit KD_Tree(); //explicit KdTree(RVOSimulator *sim);
+	KD_Node* root;
 
-	~KD_Tree();
+public:
 
-	void buildParticleTree();
+	KD_Tree() : root(NULL) {}
 
-	void buildParticleTreeRecursive(size_t begin, size_t end, size_t node, int k);
+	explicit KD_Tree(KD_Node* newroot) : root(newroot) {}
 
-	void traverseParticleTree();
+	~KD_Tree() { delete root; }
 
-	std::vector<Particle*> kd_particles;
-	std::vector<Node_Particle> kd_particleTree;
+	void insert(Particle* newparticle)
+	{
 
-	static const size_t MAX_LEAF_SIZE = 10;
+		if (!root)
+		{
+			root = new KD_Node(newparticle);
+		}
 
-	friend class Particle;
+		root->insert(newparticle, 0);
+	}
+
+	void buildParticleTree(std::vector<Particle> newparticles)
+	{
+		for (Particle particle : newparticles)
+		{
+			insert(&particle);
+		}
+	}
+
 };
-
-KD_Tree::~KD_Tree()
-{
-
-}
-
-void KD_Tree::buildParticleTree()
-{
-	//Add each additional particle to the tree, and update k vals
-	for (size_t i = 0; i < particles.size(); i++)
-	{
-		if (kd_particles.size() <= i)
-		{
-			kd_particles.push_back(&particles[i]);
-		}
-
-		kd_particleTree[i].k_vals[0] = particles[i].x;
-		kd_particleTree[i].k_vals[0] = particles[i].y;
-		kd_particleTree[i].k_vals[0] = particles[i].z;
-	}
-
-	//If there are more particles than the size of the particles tree
-	if (kd_particles.size() < particles.size())
-	{
-		kd_particleTree.resize((kd_particles.size() * 2) - 1);
-	}
-
-	if (!kd_particles.empty())
-	{
-		//Build the particle tree, with beginning = 0, node = first node (0) and ending = last node (the size of the tree)
-		buildParticleTreeRecursive(0, kd_particles.size(), 0, 0);
-	}
-}
-
-void KD_Tree::buildParticleTreeRecursive(size_t begin, size_t end, size_t node, int k)
-{
-	//Reset k if it is too much
-	if (k >= 3) { k = 0; }
-
-	kd_particleTree[node].begin = begin; //Index of beginning node
-	kd_particleTree[node].end = end; //Index of ending node
-
-	kd_particleTree[node].k_min[0] = kd_particleTree[node].k_max[0] = kd_particles[begin]->x;
-	kd_particleTree[node].k_min[1] = kd_particleTree[node].k_max[1] = kd_particles[begin]->y;
-	kd_particleTree[node].k_min[2] = kd_particleTree[node].k_max[2] = kd_particles[begin]->z;
-
-	//Get max X, min X, max Y and min Y values of all the nodes between beginning and end
-	for (size_t i = begin + 1; i < end; ++i) 
-	{
-		//max X is the maximum X value of all the nodes between beginning and end, min X is similar
-		kd_particleTree[node].k_max[0] = std::max(kd_particleTree[node].k_max[0], kd_particles[i]->x);
-		kd_particleTree[node].k_min[0] = std::min(kd_particleTree[node].k_min[0], kd_particles[i]->x);
-
-		//max Y is the maximum Y value of all the nodes between beginning and end, minimum Y is similar
-		kd_particleTree[node].k_max[1] = std::max(kd_particleTree[node].k_max[1], kd_particles[i]->y);
-		kd_particleTree[node].k_min[1] = std::min(kd_particleTree[node].k_min[1], kd_particles[i]->y);
-
-		//max Y is the maximum Y value of all the nodes between beginning and end, minimum Y is similar
-		kd_particleTree[node].k_max[2] = std::max(kd_particleTree[node].k_max[2], kd_particles[i]->z);
-		kd_particleTree[node].k_min[2] = std::min(kd_particleTree[node].k_min[2], kd_particles[i]->z);
-	}
-
-	//If the space between the ending and beginning nodes is bigger than the size of the leaf
-	if (end - begin > MAX_LEAF_SIZE)
-	{
-		
-		//splitValue = median x if isVertical, median y if not
-		const float splitValue = 0.5f * (kd_particleTree[node].k_max[0] + kd_particleTree[node].k_min[0]);
-
-		size_t left = begin;
-		size_t right = end;
-
-		while (left < right)
-		{
-			//Increment left while:
-			//left < right and: 
-			//particle at index 'left''s x is less than the average x (if isVertical), 
-			//or its y is less than the average y 
-			while ((left < right) && (kd_particleTree[node].k_vals[left] < splitValue))
-				left++;
-
-			//Decrement right while:
-			//left < right and: 
-			//particle at index 'right - 1''s x is greater than/equal to the average x (if isVertical), 
-			//or its y is greater than/equal to the average y 
-			while ((right > left) && (kd_particleTree[node].k_vals[right - 1] >= splitValue))
-				right--;
-
-			//If left still < right, swap the particles at index left and right, increment left, decrement right.
-			if (left < right)
-			{
-				std::swap(kd_particles[left], kd_particles[right]);
-				left++;
-				right--;
-			}
-
-			//increment both left and right if left == the beginning index
-			if (left == begin)
-			{
-				left++;
-				right++;
-			}
-
-			//node's left should be the next index
-			kd_particleTree[node].left = node + 1;
-			//node's right should be node plus 
-			kd_particleTree[node].right = node + 2 * (left - begin);
-
-			buildParticleTreeRecursive(begin, left, kd_particleTree[node].left, k + 1);
-			buildParticleTreeRecursive(left, end, kd_particleTree[node].right, k + 1);
-		}
-	}
-	
-}
-
-void traverseParticleTree()
-{
-
-}
 
 /**********************
 * END KD TREE ADDITIONS
@@ -2310,6 +2289,10 @@ void create_setup() {
 void pbd_main_loop(int a)
 {
 	
+	KD_Tree* tree = new KD_Tree();
+
+	tree->buildParticleTree(particles);
+
 	//checks for static obsticles 
 	check_particle_platform_collision();
 	check_particle_particle_collision();
@@ -2397,13 +2380,13 @@ int main(int argc, char** argv) {
 		setCameraPosition(0, 1, 5);
 		//spawn 50 below
 		int j = 0;
-		for (j; j < 50; j++) {
+		for (j; j < 100; j++) {
 			vec3 pos = spawnRandomCircle({ 0,0,0 }, 1,0);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 0, 2,0 });
 		}
 		//spawn 50 above
-		for (j; j < 100; j++) {
+		for (j; j < 200; j++) {
 			vec3 pos = spawnRandomCircle({ 0,1.5,0 }, 1,0);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 0, 0,0 });
