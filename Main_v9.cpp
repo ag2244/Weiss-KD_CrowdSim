@@ -2111,13 +2111,14 @@ void resolve_friction_constraints() {
 
 bool debugKD = false;
 
-void perform_collision(Particle* particle1, Particle* particle2) {
-
+float* perform_collision(Particle* particle1, Particle* particle2) {
 
 	static float corrections[6];
+
 	float correction_x1 = 0.0;
 	float correction_y1 = 0.0;
 	float correction_z1 = 0.0;
+
 	float correction_x2 = 0.0;
 	float correction_y2 = 0.0;
 	float correction_z2 = 0.0;
@@ -2141,7 +2142,7 @@ void perform_collision(Particle* particle1, Particle* particle2) {
 	float currdist = distance(px1, py1, pz1, px2, py2, pz2);
 
 	if (currdist == 0)
-		return; //return corrections;
+		return corrections;
 
 	float dist_diff = currdist - (particle1->r + particle2->r);
 
@@ -2158,14 +2159,14 @@ void perform_collision(Particle* particle1, Particle* particle2) {
 		correction_z2 = coef2 * coef * (pz1 - pz2);
 	}
 
-	particle1->px += correction_x1;
-	particle1->py += correction_y1;
-	particle1->pz += correction_z1;
-	particle2->px += correction_x2;
-	particle2->py += correction_y2;
-	particle2->pz += correction_z2;
+	corrections[0] = correction_x1;
+	corrections[1] = correction_y1;
+	corrections[2] = correction_z1;
+	corrections[3] = correction_x2;
+	corrections[4] = correction_y2;
+	corrections[5] = correction_z2;
 
-	//return corrections;
+	return corrections;
 }
 
 class KD_Tree
@@ -2199,16 +2200,16 @@ private:
 
 			if (k > 2) { k = 0; }
 
-			/*if (left) left->insert(newparticle, k+1);
+			//if (right != NULL) right->insert(newparticle, k+1);
 
-			else left = new KD_Node(particle);*/
+			//else right = new KD_Node(particle);
 
 			switch (k)
 			{
 			case 0:
 				if (newparticle->x < particle->x)
 				{
-					if (left)
+					if (left != NULL)
 					{
 						left->insert(newparticle, k + 1);
 					}
@@ -2218,7 +2219,7 @@ private:
 
 				else
 				{
-					if (right)
+					if (right != NULL)
 					{
 						right->insert(newparticle, k + 1);
 					}
@@ -2232,7 +2233,7 @@ private:
 
 				if (newparticle->y < particle->y)
 				{
-					if (left)
+					if (left != NULL)
 					{
 						left->insert(newparticle, k + 1);
 					}
@@ -2242,7 +2243,7 @@ private:
 
 				else
 				{
-					if (right)
+					if (right != NULL)
 					{
 						right->insert(newparticle, k + 1);
 					}
@@ -2256,7 +2257,7 @@ private:
 
 				if (newparticle->z < particle->z)
 				{
-					if (left)
+					if (left != NULL)
 					{
 						left->insert(newparticle, k + 1);
 					}
@@ -2266,7 +2267,7 @@ private:
 
 				else
 				{
-					if (right)
+					if (right != NULL)
 					{
 						right->insert(newparticle, k + 1);
 					}
@@ -2284,17 +2285,24 @@ private:
 
 			if (debugKD) printf("\n In function Node::Traverse \n");
 
-			//Check collision with this node's particle
-			float dist = distance(inparticle->px, inparticle->py, inparticle->pz, particle->px, particle->py, particle->pz);
-
-			float dist_difference = dist - (inparticle->r + particle->r);
-
-			if (dist_difference < 0)
+			if (particle != inparticle)
 			{
-
 				if (debugKD) printf("\n Performing collision... \n");
 
-				perform_collision(inparticle, particle);
+				float* deltas = perform_collision(inparticle, particle);
+				float delta_x1 = deltas[0];
+				float delta_y1 = deltas[1];
+				float delta_z1 = deltas[2];
+				float delta_x2 = deltas[3];
+				float delta_y2 = deltas[4];
+				float delta_z2 = deltas[5];
+
+				inparticle->px += delta_x1;
+				inparticle->py += delta_y1;
+				inparticle->pz += delta_z1;
+				particle->px += delta_x2;
+				particle->py += delta_y2;
+				particle->pz += delta_z2;
 
 				if (debugKD) printf("\n Performed collision! \n");
 			}
@@ -2386,7 +2394,7 @@ private:
 
 			}
 
-			if (debugKD) printf("\n \n");
+			//if (debugKD) printf("\n \n");
 
 			//If particleK is closer to leftK than rightK
 			if (abs(particleK - leftK) < abs(particleK - rightK))
@@ -2418,14 +2426,14 @@ private:
 				right->traverse(inparticle, k + 1);
 
 				//If particle is closer to the other division than to the right particle
-				/*if (abs(particleK1 - thisK) <= distance(inparticle->x, inparticle->y, inparticle->z, right->particle->x, right->particle->y, right->particle->z))
+				if (abs(particleK1 - thisK) <= distance(inparticle->x, inparticle->y, inparticle->z, right->particle->x, right->particle->y, right->particle->z))
 				{
 
 					if (debugKD) printf("\n Closer to other division than right particle\n");
 
 					//Traverse left
 					left->traverse(inparticle, k + 1);
-				}*/
+				}
 			}
 
 		}
@@ -2531,9 +2539,7 @@ void pbd_main_loop(int a)
 
 	//checks for static obsticles 
 	check_particle_platform_collision();
-	/*
 	check_particle_particle_collision();
-	*/
 
 	//update particles
 	update_particles();
@@ -2543,7 +2549,7 @@ void pbd_main_loop(int a)
 		particles[i].py = particles[i].y + particles[i].vy + gravity * time_delta;
 		particles[i].pz = particles[i].z + particles[i].vz;
 	}
-	
+
 	for (int i = 0; i < particles.size(); i++)
 	{
 		tree->traverse(&particles[i]);
@@ -2557,10 +2563,10 @@ void pbd_main_loop(int a)
 	//resolve_collision_constraints(); //OLD COLLISION
 
 	//resolve_friction_constraints();
-	resolveClosestSurface();
+	resolveClosestSurface(); //NEEDED
 	//}
 	
-	resolve_collisions_with_static_objects();
+	resolve_collisions_with_static_objects(); //NEEDED
 	//resolve_ant_platform_collision();
 	for (int i = 0; i < particles.size(); i++) {
 		// line 13
@@ -2578,7 +2584,7 @@ void pbd_main_loop(int a)
 	frame++;
 	//printf("frame %i \n", frame);
 	glutPostRedisplay();
-	glutTimerFunc(2, pbd_main_loop, 25);//Call update after each 25 millisecond
+	glutTimerFunc(20, pbd_main_loop, 25);//Call update after each 25 millisecond
 }
 
 vec3 spawnRandomCircle(vec3 center, float radius,int dir) {
@@ -2619,19 +2625,19 @@ int main(int argc, char** argv) {
 	case 0: {
 		platforms.push_back(Platform(0.0, 0.0, 0.0, box, .2, .9, .2, 0));
 		platforms.push_back(Platform(0.0, -0.3, 0.0, box, 2, .2, 2, 1));
-		platforms.push_back(Platform(0.0, 2.0, 0.0, box, .2, .9, .2, 2));
-		platforms.push_back(Platform(0.0, 2.0, 0.0, box, 2, .2, 2, 3));
+		//platforms.push_back(Platform(0.0, 2.0, 0.0, box, .2, .9, .2, 2));
+		//platforms.push_back(Platform(0.0, 2.0, 0.0, box, 2, .2, 2, 3));
 
 		setCameraPosition(0, 1, 3);
 		//spawn 50 below
 		int j = 0;
-		for (j; j < 50; j++) {
+		for (j; j < 0; j++) {
 			vec3 pos = spawnRandomCircle({ 0,0,0 }, 1,0);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 0, 2,0 });
 		}
 		//spawn 50 above
-		for (j; j < 100; j++) {
+		for (j; j < 20; j++) {
 			vec3 pos = spawnRandomCircle({ 0,1.5,0 }, 1,0);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 0, 0,0 });
@@ -2648,13 +2654,13 @@ int main(int argc, char** argv) {
 		setCameraPosition(0, 1, 3);
 		//spawn 50 below
 		int j = 0;
-		for (j; j < 20; j++) {
+		for (j; j < 10; j++) {
 			vec3 pos = spawnRandomCircle({ -1,1,0 }, 1,2);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 3, 2,0 });
 		}
 		//spawn 50 above
-		for (j; j < 40; j++) {
+		for (j; j < 20; j++) {
 			vec3 pos = spawnRandomCircle({ 1,1,0 }, 1,2);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ -3, 2,0 });
