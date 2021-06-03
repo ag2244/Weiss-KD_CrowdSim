@@ -828,153 +828,6 @@ public:
 
 std::vector<Particle> particles;
 
-/******************
-* KD TREE ADDITIONS  
-******************/
-
-class KD_Tree
-{
-
-private:
-
-	//Node for a particle
-	class KD_Node
-	{
-	public:
-
-		KD_Node* left;
-		KD_Node* right;
-
-		Particle* particle;
-
-		KD_Node(Particle* newparticle) : particle(newparticle) {}
-
-		void del_node(KD_Node* node)
-		{
-			if (node != NULL) {
-				delete node->left;
-				delete node->right;
-				delete node;
-			}
-		}
-
-		void insert(Particle* newparticle, int k)
-		{
-			
-			if (k > 2) { k = 0; }
-
-			switch (k)
-			{
-			case 0:
-				if (newparticle->x < particle->x)
-				{
-					if (left)
-					{
-						left->insert(particle, k + 1);
-					}
-
-					else { left = new KD_Node(particle); }
-				}
-
-				else
-				{
-					if (right)
-					{
-						right->insert(particle, k + 1);
-					}
-
-					else { right = new KD_Node(particle); }
-				}
-
-				break;
-
-			case 1:
-
-				if (newparticle->y < particle->y)
-				{
-					if (left)
-					{
-						left->insert(particle, k + 1);
-					}
-
-					else { left = new KD_Node(particle); }
-				}
-
-				else
-				{
-					if (right)
-					{
-						right->insert(particle, k + 1);
-					}
-
-					else { right = new KD_Node(particle); }
-				}
-				
-				break;
-
-			case 2:
-
-				if (newparticle->z < particle->z)
-				{
-					if (left)
-					{
-						left->insert(particle, k + 1);
-					}
-
-					else { left = new KD_Node(particle); }
-				}
-
-				else
-				{
-					if (right)
-					{
-						right->insert(particle, k + 1);
-					}
-
-					else { right = new KD_Node(particle); }
-				}
-				
-				break;
-
-			}
-		}
-	};
-
-	KD_Node* root;
-
-public:
-
-	KD_Tree() : root(NULL) {}
-
-	explicit KD_Tree(KD_Node* newroot) : root(newroot) {}
-
-	~KD_Tree() { delete root; }
-
-	void insert(Particle* newparticle)
-	{
-
-		if (!root)
-		{
-			root = new KD_Node(newparticle);
-		}
-
-		root->insert(newparticle, 0);
-	}
-
-	void buildParticleTree(std::vector<Particle> newparticles)
-	{
-		for (Particle particle : newparticles)
-		{
-			insert(&particle);
-		}
-	}
-
-};
-
-/**********************
-* END KD TREE ADDITIONS
-**********************/
-
 template<typename T>
 T getParticle(int id)
 {
@@ -2251,6 +2104,375 @@ void resolve_friction_constraints() {
 		}
 	}
 }
+
+/******************
+* KD TREE ADDITIONS
+******************/
+
+bool debugKD = true;
+
+void perform_collision(Particle* particle1, Particle* particle2) {
+
+
+	static float corrections[6];
+	float correction_x1 = 0.0;
+	float correction_y1 = 0.0;
+	float correction_z1 = 0.0;
+	float correction_x2 = 0.0;
+	float correction_y2 = 0.0;
+	float correction_z2 = 0.0;
+
+	float px1 = particle1->px;
+	float py1 = particle1->py;
+	float pz1 = particle1->pz;
+	float px2 = particle2->px;
+	float py2 = particle2->py;
+	float pz2 = particle2->pz;
+
+	float currdist = distance(px1, py1, pz1, px2, py2, pz2);
+
+	if (currdist == 0)
+		return; //return corrections;
+
+	float dist_diff = currdist - (particle1->r + particle2->r);
+
+	if (dist_diff < 0) {
+
+		float coef1 = -particle1->inv_mass / (particle1->inv_mass + particle2->inv_mass);
+		float coef2 = particle2->inv_mass / (particle1->inv_mass + particle2->inv_mass);
+		float coef = .5f * dist_diff / currdist;
+		correction_x1 = coef1 * coef * (px1 - px2);
+		correction_y1 = coef1 * coef * (py1 - py2);
+		correction_z1 = coef1 * coef * (pz1 - pz2);
+		correction_x2 = coef2 * coef * (px1 - px2);
+		correction_y2 = coef2 * coef * (py1 - py2);
+		correction_z2 = coef2 * coef * (pz1 - pz2);
+	}
+
+	particle1->px += correction_x1;
+	particle1->py += correction_y1;
+	particle1->pz += correction_z1;
+	particle2->px += correction_x2;
+	particle2->py += correction_y2;
+	particle2->pz += correction_z2;
+
+	//return corrections;
+}
+
+class KD_Tree
+{
+
+private:
+
+	//Node for a particle
+	class KD_Node
+	{
+	public:
+
+		KD_Node* left;
+		KD_Node* right;
+
+		Particle* particle;
+
+		KD_Node(Particle* newparticle) : particle(newparticle) {}
+
+		void del_node(KD_Node* node)
+		{
+			if (node != NULL) {
+				delete node->left;
+				delete node->right;
+				delete node;
+			}
+		}
+
+		void insert(Particle* newparticle, int k)
+		{
+
+			if (k > 2) { k = 0; }
+
+			/*if (left) left->insert(newparticle, k+1);
+
+			else left = new KD_Node(particle);*/
+
+			switch (k)
+			{
+			case 0:
+				if (newparticle->x < particle->x)
+				{
+					if (left)
+					{
+						left->insert(particle, k + 1);
+					}
+
+					else { left = new KD_Node(particle); }
+				}
+
+				else
+				{
+					if (right)
+					{
+						right->insert(particle, k + 1);
+					}
+
+					else { right = new KD_Node(particle); }
+				}
+
+				break;
+
+			case 1:
+
+				if (newparticle->y < particle->y)
+				{
+					if (left)
+					{
+						left->insert(particle, k + 1);
+					}
+
+					else { left = new KD_Node(particle); }
+				}
+
+				else
+				{
+					if (right)
+					{
+						right->insert(particle, k + 1);
+					}
+
+					else { right = new KD_Node(particle); }
+				}
+
+				break;
+
+			case 2:
+
+				if (newparticle->z < particle->z)
+				{
+					if (left)
+					{
+						left->insert(particle, k + 1);
+					}
+
+					else { left = new KD_Node(particle); }
+				}
+
+				else
+				{
+					if (right)
+					{
+						right->insert(particle, k + 1);
+					}
+
+					else { right = new KD_Node(particle); }
+				}
+
+				break;
+
+			}
+		}
+
+		void traverse(Particle* inparticle, int k)
+		{
+
+			if (debugKD) printf("\n In function Node::Traverse \n");
+
+			//Check collision with this node's particle
+
+			if (inparticle != particle)
+			{
+				float dist = distance(inparticle->px, inparticle->py, inparticle->pz, particle->px, particle->py, particle->pz);
+
+				float dist_difference = dist - (inparticle->r + particle->r);
+
+				if (dist_difference < 0)
+				{
+
+					if (debugKD) printf("\n Performing collision... \n");
+
+					perform_collision(inparticle, particle);
+
+					if (debugKD) printf("\n Performed collision! \n");
+				}
+			}
+
+			
+
+			//Traverse down the tree
+
+			if (k > 2) { k = 0; }
+
+			//If only left or right exists, traverse there
+			if ((left != NULL) && (right == NULL))
+			{
+
+				if (debugKD) printf("\n Only left exists \n");
+
+				left->traverse(inparticle, k + 1);
+
+				return;
+			}
+
+			else if ((right != NULL) && (left == NULL))
+			{
+
+				if (debugKD) printf("\n Only right exists \n");
+
+				right->traverse(inparticle, k + 1);
+
+				return;
+			}
+
+			//If neither exist, return
+			else if ((right == NULL) && (left == NULL))
+			{
+
+				if (debugKD) printf("\n No left or right \n");
+
+				return;
+			}
+
+			if (debugKD) printf("\n Made sure if both left and right exist \n");
+			printf("\nASD");
+			//Get the k values to compare
+
+			float particleK; float leftK; float rightK; 
+			float particleK1; float thisK;
+
+			switch (k)
+			{
+
+			case 0:
+
+				if (debugKD) printf("\n K = X \n");
+
+				particleK = inparticle->x;
+				leftK = left->particle->x;
+				rightK = right->particle->x;
+
+				particleK1 = particle->x;
+				thisK = particle->x;
+
+				break;
+
+			case 1:
+
+				if (debugKD) printf("\n K = Y \n");
+
+				particleK = inparticle->y;
+				leftK = left->particle->y;
+				rightK = right->particle->y;
+
+				particleK1 = particle->y;
+				thisK = particle->y;
+
+				break;
+
+			case 2:
+
+				if (debugKD) printf("\n K = Z \n");
+
+				particleK = inparticle->z;
+				leftK = left->particle->z;
+				rightK = right->particle->z;
+
+				particleK1 = particle->z;
+				thisK = particle->z;
+
+				break;
+
+			default: return;
+
+			}
+
+			if (debugKD) printf("\n \n");
+
+			//If particleK is closer to leftK than rightK
+			if (abs(particleK - leftK) < abs(particleK - rightK))
+			{
+
+				if (debugKD) printf("\n K closer to leftK than rightK \n");
+
+				//Traverse left
+				left->traverse(inparticle, k + 1);
+
+				//If particle is closer to the other division than to the left particle
+				if (abs(particleK1 - thisK) <= distance(inparticle->x, inparticle->y, inparticle->z, left->particle->x, left->particle->y, left->particle->z))
+				{
+
+					if (debugKD) printf("\n Closer to other division than left particle\n");
+
+					//Traverse right
+					right->traverse(inparticle, k + 1);
+				}
+			}
+
+			//If particleK is closer to rightK than leftK
+			else
+			{
+
+				if (debugKD) printf("\n K closer to rightK than leftK\n");
+
+				//Traverse right
+				right->traverse(inparticle, k + 1);
+
+				//If particle is closer to the other division than to the right particle
+				if (abs(particleK1 - thisK) <= distance(inparticle->x, inparticle->y, inparticle->z, right->particle->x, right->particle->y, right->particle->z))
+				{
+
+					if (debugKD) printf("\n Closer to other division than right particle\n");
+
+					//Traverse right
+					left->traverse(inparticle, k + 1);
+				}
+			}
+
+		}
+	};
+
+	KD_Node* root;
+
+public:
+
+	KD_Tree() : root(NULL) {}
+
+	explicit KD_Tree(KD_Node* newroot) : root(newroot) {}
+
+	~KD_Tree() { delete root; }
+
+	void insert(Particle* newparticle)
+	{
+
+		if (!root)
+		{
+			root = new KD_Node(newparticle);
+		}
+
+		root->insert(newparticle, 0);
+	}
+
+	void buildParticleTree(std::vector<Particle> newparticles)
+	{
+		for (Particle particle : newparticles)
+		{
+			insert(&particle);
+		}
+	}
+
+	void traverse(Particle* particle)
+	{
+
+		if (debugKD) printf("\n BEGINNING TRAVERSAL\n");
+
+		if (!root) { return; }
+
+		root->traverse(particle, 0);
+	}
+
+};
+
+/**********************
+* END KD TREE ADDITIONS
+**********************/
+
 void write_to_file() {
 	FILE* fp_out;
 	std::string path = std::string(OUT_PATH) + std::to_string(frame) + std::string(".txt");
@@ -2293,9 +2515,12 @@ void pbd_main_loop(int a)
 
 	tree->buildParticleTree(particles);
 
+	/*
 	//checks for static obsticles 
 	check_particle_platform_collision();
 	check_particle_particle_collision();
+	*/
+
 	//update particles
 	update_particles();
 	for (int i = 0; i < particles.size(); i++) {
@@ -2303,6 +2528,8 @@ void pbd_main_loop(int a)
 		particles[i].px = particles[i].x + particles[i].vx;
 		particles[i].py = particles[i].y + particles[i].vy + gravity * time_delta;
 		particles[i].pz = particles[i].z + particles[i].vz;
+
+		tree->traverse(&particles[i]);
 	}
 	
 	
@@ -2310,7 +2537,9 @@ void pbd_main_loop(int a)
 	//for (int i = 0; i < 3; i++) {
 	//resolve_friction_constraint(); friction constraint resolved before/after collision constraint
 	//resolve_friction_constraints();
-	resolve_collision_constraints();
+
+	/*resolve_collision_constraints();*/
+
 	//resolve_friction_constraints();
 	resolveClosestSurface();
 	//}
@@ -2380,13 +2609,13 @@ int main(int argc, char** argv) {
 		setCameraPosition(0, 1, 5);
 		//spawn 50 below
 		int j = 0;
-		for (j; j < 100; j++) {
+		for (j; j < 20; j++) {
 			vec3 pos = spawnRandomCircle({ 0,0,0 }, 1,0);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 0, 2,0 });
 		}
 		//spawn 50 above
-		for (j; j < 200; j++) {
+		for (j; j < 40; j++) {
 			vec3 pos = spawnRandomCircle({ 0,1.5,0 }, 1,0);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 0, 0,0 });
@@ -2403,13 +2632,13 @@ int main(int argc, char** argv) {
 		setCameraPosition(0, 1, 5);
 		//spawn 50 below
 		int j = 0;
-		for (j; j < 50; j++) {
+		for (j; j < 20; j++) {
 			vec3 pos = spawnRandomCircle({ -1,1,0 }, 1,2);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 3, 2,0 });
 		}
 		//spawn 50 above
-		for (j; j < 100; j++) {
+		for (j; j < 40; j++) {
 			vec3 pos = spawnRandomCircle({ 1,1,0 }, 1,2);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ -3, 2,0 });
