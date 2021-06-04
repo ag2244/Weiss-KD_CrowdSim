@@ -2111,14 +2111,12 @@ void resolve_friction_constraints() {
 
 bool debugKD = false;
 
-float* perform_collision(Particle* particle1, Particle* particle2) {
-
+float* perform_collision(Particle* particle1, Particle* particle2) 
+{
 	static float corrections[6];
-
 	float correction_x1 = 0.0;
 	float correction_y1 = 0.0;
 	float correction_z1 = 0.0;
-
 	float correction_x2 = 0.0;
 	float correction_y2 = 0.0;
 	float correction_z2 = 0.0;
@@ -2130,20 +2128,9 @@ float* perform_collision(Particle* particle1, Particle* particle2) {
 	float py2 = particle2->py;
 	float pz2 = particle2->pz;
 
-	/*std::cout <<
-		px1 << " " <<
-		py1 << " " <<
-		pz1 << " " <<
-		px2 << " " <<
-		py2 << " " <<
-		pz2 << " " <<
-		std::endl;*/
-
 	float currdist = distance(px1, py1, pz1, px2, py2, pz2);
-
 	if (currdist == 0)
 		return corrections;
-
 	float dist_diff = currdist - (particle1->r + particle2->r);
 
 	if (dist_diff < 0) {
@@ -2199,10 +2186,6 @@ private:
 		{
 
 			if (k > 2) { k = 0; }
-
-			//if (right != NULL) right->insert(newparticle, k+1);
-
-			//else right = new KD_Node(particle);
 
 			switch (k)
 			{
@@ -2278,6 +2261,7 @@ private:
 				break;
 
 			}
+
 		}
 
 		void traverse(Particle* inparticle, int k)
@@ -2285,8 +2269,9 @@ private:
 
 			if (debugKD) printf("\n In function Node::Traverse \n");
 
-			if (particle != inparticle)
+			if (particle->id != inparticle->id)
 			{
+
 				if (debugKD) printf("\n Performing collision... \n");
 
 				float* deltas = perform_collision(inparticle, particle);
@@ -2306,6 +2291,8 @@ private:
 
 				if (debugKD) printf("\n Performed collision! \n");
 			}
+
+			//Traverse down the tree
 
 			//Traverse down the tree
 
@@ -2345,9 +2332,9 @@ private:
 			if (debugKD) printf("\n Made sure if both left and right exist \n");
 			//Get the k values to compare
 
-			float particleK; float leftK; float rightK; 
+			float particleK; float leftK; float rightK;
 			float particleK1; float thisK;
-			
+
 			switch (k)
 			{
 
@@ -2359,8 +2346,8 @@ private:
 				leftK = left->particle->x;
 				rightK = right->particle->x;
 
-				particleK1 = particle->z;
-				thisK = particle->z;
+				particleK1 = particle->x;
+				thisK = particle->x;
 
 				break;
 
@@ -2372,8 +2359,8 @@ private:
 				leftK = left->particle->y;
 				rightK = right->particle->y;
 
-				particleK1 = particle->x;
-				thisK = particle->x;
+				particleK1 = particle->y;
+				thisK = particle->y;
 
 				break;
 
@@ -2385,8 +2372,8 @@ private:
 				leftK = left->particle->z;
 				rightK = right->particle->z;
 
-				particleK1 = particle->y;
-				thisK = particle->y;
+				particleK1 = particle->z;
+				thisK = particle->z;
 
 				break;
 
@@ -2455,6 +2442,8 @@ public:
 		if (!root)
 		{
 			root = new KD_Node(newparticle);
+
+			return;
 		}
 
 		root->insert(newparticle, 0);
@@ -2530,16 +2519,17 @@ void createSetUpFile(int sim) {
 void create_setup() {
 
 }
+
+bool use_kd = false;
+
 void pbd_main_loop(int a)
 {
-	
-	KD_Tree* tree = new KD_Tree();
-
-	tree->buildParticleTree(particles);
 
 	//checks for static obsticles 
 	check_particle_platform_collision();
-	check_particle_particle_collision();
+
+	if (use_kd == false)
+		check_particle_particle_collision();
 
 	//update particles
 	update_particles();
@@ -2549,18 +2539,24 @@ void pbd_main_loop(int a)
 		particles[i].py = particles[i].y + particles[i].vy + gravity * time_delta;
 		particles[i].pz = particles[i].z + particles[i].vz;
 	}
-
-	for (int i = 0; i < particles.size(); i++)
-	{
-		tree->traverse(&particles[i]);
-	}
-	
 	
 	//for (int i = 0; i < 3; i++) {
 	//resolve_friction_constraint(); friction constraint resolved before/after collision constraint
 	//resolve_friction_constraints();
 
-	//resolve_collision_constraints(); //OLD COLLISION
+	if (use_kd == true)
+	{
+		KD_Tree* tree = new KD_Tree();
+
+		tree->buildParticleTree(particles);
+
+		for (int i = 0; i < particles.size(); i++)
+		{
+			tree->traverse(&particles[i]);
+		}
+	}
+
+	else { resolve_collision_constraints(); } //OLD COLLISION
 
 	//resolve_friction_constraints();
 	resolveClosestSurface(); //NEEDED
@@ -2584,7 +2580,7 @@ void pbd_main_loop(int a)
 	frame++;
 	//printf("frame %i \n", frame);
 	glutPostRedisplay();
-	glutTimerFunc(20, pbd_main_loop, 25);//Call update after each 25 millisecond
+	glutTimerFunc(2, pbd_main_loop, 25);//Call update after each 25 millisecond
 }
 
 vec3 spawnRandomCircle(vec3 center, float radius,int dir) {
@@ -2614,30 +2610,40 @@ vec3 spawnRandomCircle(vec3 center, float radius,int dir) {
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
 
+	if (argc > 1)
+	{
+		if (strcmp(argv[1], "-kd") == 0)
+		{
+			use_kd = true;
+
+			std::cout << "Using KD Tree!" << std::endl;
+		}
+	}
+
 	//while (reachedGoal==false||frame < 70000) {
 	//	pbd_main_loop(0);
 	//}
 	int i;
-	std::cout << "enter simulation. 0-horizantal bridge,1-verticle bridge" ;
+	std::cout << "enter simulation. 0-horizantal bridge,1-verticle bridge" << std::endl;
 	std::cin >> i;
 	printf("int %i", i);
 	switch (i) {
 	case 0: {
 		platforms.push_back(Platform(0.0, 0.0, 0.0, box, .2, .9, .2, 0));
 		platforms.push_back(Platform(0.0, -0.3, 0.0, box, 2, .2, 2, 1));
-		//platforms.push_back(Platform(0.0, 2.0, 0.0, box, .2, .9, .2, 2));
-		//platforms.push_back(Platform(0.0, 2.0, 0.0, box, 2, .2, 2, 3));
+		platforms.push_back(Platform(0.0, 2.0, 0.0, box, .2, .9, .2, 2));
+		platforms.push_back(Platform(0.0, 2.0, 0.0, box, 2, .2, 2, 3));
 
 		setCameraPosition(0, 1, 3);
 		//spawn 50 below
 		int j = 0;
-		for (j; j < 0; j++) {
+		for (j; j < 100; j++) {
 			vec3 pos = spawnRandomCircle({ 0,0,0 }, 1,0);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 0, 2,0 });
 		}
 		//spawn 50 above
-		for (j; j < 20; j++) {
+		for (j; j < 200; j++) {
 			vec3 pos = spawnRandomCircle({ 0,1.5,0 }, 1,0);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 0, 0,0 });
@@ -2654,13 +2660,13 @@ int main(int argc, char** argv) {
 		setCameraPosition(0, 1, 3);
 		//spawn 50 below
 		int j = 0;
-		for (j; j < 10; j++) {
+		for (j; j < 55; j++) {
 			vec3 pos = spawnRandomCircle({ -1,1,0 }, 1,2);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ 3, 2,0 });
 		}
 		//spawn 50 above
-		for (j; j < 20; j++) {
+		for (j; j < 110; j++) {
 			vec3 pos = spawnRandomCircle({ 1,1,0 }, 1,2);
 			particles.push_back(Particle(pos.x, pos.y, pos.z, j));
 			particles[j].setDestination({ -3, 2,0 });
