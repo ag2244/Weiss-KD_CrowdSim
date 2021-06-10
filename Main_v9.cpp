@@ -2189,6 +2189,7 @@ private:
 
 			switch (k)
 			{
+			//Dealing with x dimension
 			case 0:
 				if (newparticle->x < particle->x)
 				{
@@ -2212,6 +2213,7 @@ private:
 
 				break;
 
+			//Dealing with y dimension
 			case 1:
 
 				if (newparticle->y < particle->y)
@@ -2236,6 +2238,7 @@ private:
 
 				break;
 
+			//Dealing with z dimension
 			case 2:
 
 				if (newparticle->z < particle->z)
@@ -2266,6 +2269,7 @@ private:
 
 		void traverse(Particle* inparticle, int k)
 		{
+			//First: Collide with the particle represented in this node.
 
 			if (debugKD) printf("\n In function Node::Traverse \n");
 
@@ -2294,13 +2298,11 @@ private:
 
 			//Traverse down the tree
 
-			//Traverse down the tree
-
 			if (k > 2) { k = 0; }
 			//std::cout << k << std::endl;
 
 			//If only left or right exists, traverse there
-			if ((left != NULL) && (right == NULL))
+			if ((left) && (!right))
 			{
 
 				if (debugKD) printf("\n Only left exists \n");
@@ -2310,7 +2312,7 @@ private:
 				return;
 			}
 
-			else if ((right != NULL) && (left == NULL))
+			else if ((right) && (!left))
 			{
 
 				if (debugKD) printf("\n Only right exists \n");
@@ -2321,7 +2323,7 @@ private:
 			}
 
 			//If neither exist, return
-			else if ((right == NULL) && (left == NULL))
+			else if ((!right) && (!left))
 			{
 
 				if (debugKD) printf("\n No left or right \n");
@@ -2330,14 +2332,15 @@ private:
 			}
 
 			if (debugKD) printf("\n Made sure if both left and right exist \n");
-			//Get the k values to compare
-
+			
+			//Get the k values of the particle being compared, the left node's particle, the right node's particle, and the current node's particle to compare
 			float particleK; float leftK; float rightK;
-			float particleK1; float thisK;
+			float thisK;
 
 			switch (k)
 			{
 
+			//1st dimension (x)
 			case 0:
 
 				if (debugKD) printf("\n K = X \n");
@@ -2346,11 +2349,11 @@ private:
 				leftK = left->particle->x;
 				rightK = right->particle->x;
 
-				particleK1 = particle->x;
 				thisK = particle->x;
 
 				break;
 
+			//2nd dimension (y)
 			case 1:
 
 				if (debugKD) printf("\n K = Y \n");
@@ -2359,11 +2362,11 @@ private:
 				leftK = left->particle->y;
 				rightK = right->particle->y;
 
-				particleK1 = particle->y;
 				thisK = particle->y;
 
 				break;
 
+			//3rd dimension (z)
 			case 2:
 
 				if (debugKD) printf("\n K = Z \n");
@@ -2372,7 +2375,6 @@ private:
 				leftK = left->particle->z;
 				rightK = right->particle->z;
 
-				particleK1 = particle->z;
 				thisK = particle->z;
 
 				break;
@@ -2380,8 +2382,6 @@ private:
 			default: return;
 
 			}
-
-			//if (debugKD) printf("\n \n");
 
 			//If particleK is closer to leftK than rightK
 			if (abs(particleK - leftK) < abs(particleK - rightK))
@@ -2392,8 +2392,8 @@ private:
 				//Traverse left
 				left->traverse(inparticle, k + 1);
 
-				//If particle is closer to the other division than to the left particle
-				if (abs(particleK1 - thisK) <= distance(inparticle->x, inparticle->y, inparticle->z, left->particle->x, left->particle->y, left->particle->z))
+				//If particle is closer to the rightward division than to the left particle, traverse right too
+				if (abs(particleK - thisK) <= distance(inparticle->x, inparticle->y, inparticle->z, left->particle->x, left->particle->y, left->particle->z))
 				{
 
 					if (debugKD) printf("\n Closer to other division than left particle\n");
@@ -2412,13 +2412,12 @@ private:
 				//Traverse right
 				right->traverse(inparticle, k + 1);
 
-				//If particle is closer to the other division than to the right particle
-				if (abs(particleK1 - thisK) <= distance(inparticle->x, inparticle->y, inparticle->z, right->particle->x, right->particle->y, right->particle->z))
+				//If particle is closer to the leftward division than to the right particle, traverse left too
+				if (abs(particleK - thisK) <= distance(inparticle->x, inparticle->y, inparticle->z, right->particle->x, right->particle->y, right->particle->z))
 				{
 
 					if (debugKD) printf("\n Closer to other division than right particle\n");
 
-					//Traverse left
 					left->traverse(inparticle, k + 1);
 				}
 			}
