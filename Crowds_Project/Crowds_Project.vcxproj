@@ -156,7 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\glm\detail\glm.cpp" />
-    <ClCompile Include="..\Main_v9.cpp" />
+    <ClCompile Include="..\main_v14.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\freeglut.h" />

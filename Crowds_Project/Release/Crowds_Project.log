@@ -1,72 +1,93 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(477,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  Main_v9.cpp
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(16,25): warning C4305: 'initializing': truncation from 'double' to 'float'
+  glm.cpp
+  main_v14.cpp
 C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Shader.h(57,40): warning C4101: 'e': unreferenced local variable
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(42,27): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(44,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(46,22): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(324,14): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(430,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(432,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(434,30): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(436,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(438,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(440,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(517,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(572,1): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(589,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(644,1): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(718,1): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(776,24): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(793,24): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(845,51): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(846,53): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(980,17): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1121,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1135,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1193,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1194,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1200,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1201,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1229,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1230,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1237,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1238,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1463,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1469,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1473,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1495,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1499,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1628,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1648,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1683,117): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1698,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1734,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1740,24): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1747,24): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1775,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1779,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(1856,42): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2056,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2059,25): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2083,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2086,25): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2453,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2508,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2535,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2552,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2566,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2631,65): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2632,64): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2633,65): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2634,63): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2654,66): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2655,64): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2656,65): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Main_v9.cpp(2657,63): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(26,25): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(137,27): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(139,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(141,22): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(200,14): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(310,1): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(314,1): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(429,37): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(522,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(577,1): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(594,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(649,1): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(723,1): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(796,1): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(832,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(833,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(834,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(902,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main.h(919,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\kd_tree.h(354,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(299,51): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(300,53): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(439,17): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(567,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(587,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(650,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(651,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(657,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(658,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(686,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(687,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(694,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(695,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(754,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(953,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(959,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(963,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(985,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(989,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1118,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1139,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1197,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1233,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1239,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1246,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1297,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1301,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1378,42): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1578,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1581,25): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1605,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1608,25): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1652,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1667,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1670,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1683,54): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1684,54): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1685,54): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1686,55): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1687,55): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1688,55): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1706,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1728,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1744,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1808,65): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1809,64): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1810,65): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1811,63): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1817,14): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1824,30): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1829,45): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1839,14): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1847,30): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1851,45): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1881,66): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1882,64): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1883,65): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1884,63): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1890,14): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1897,30): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1913,14): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1920,30): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1954,64): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\main_v14.cpp(1956,63): warning C4305: 'argument': truncation from 'double' to 'float'
   Generating code
-  2 of 622 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB not found, fall back to full compilation.
+  All 592 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   Crowds_Project.vcxproj -> C:\Users\anura\OneDrive\Desktop\Crowds_KDtree\Crowds_Project\..\Crowds_Project.exe
